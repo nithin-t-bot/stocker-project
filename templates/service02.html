@@ -1,0 +1,90 @@
+<!-- templates/service02.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>View Transactions - Stocker</title>
+
+  <link href="{{ url_for('static', filename='img/logo stocker.png') }}" rel="icon" />
+  <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" />
+  <link href="{{ url_for('static', filename='vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet" />
+  <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" />
+</head>
+<body>
+
+<header id="header" class="header d-flex align-items-center fixed-top">
+  <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+    <a class="logo d-flex align-items-center me-auto me-lg-0">
+      <img src="{{ url_for('static', filename='img/logo stocker.png') }}" alt="">
+      <h1 class="sitename">STOCKER</h1><span style="color: #3fb61a">.</span>
+    </a>
+    <nav id="navmenu" class="navmenu">
+      <ul class="d-flex align-items-center mb-0">  
+        <li><a href="{{ url_for('dashboard_admin') }}" class="btn btn-primary ms-4 px-4 py-2 rounded">Back to Dashboard</a></li>
+        <li><a href="{{ url_for('logout') }}" class="btn btn-danger ms-4 px-4 py-2 rounded">Logout</a></li>
+      </ul>
+      <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+    </nav>
+  </div>
+</header>
+
+<section class="section" style="padding-top: 100px;">
+  <div class="container">
+    <div class="section-title">
+      <h2>All Transactions</h2>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            {% if transactions %}
+              <div class="table-responsive">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>Transaction ID</th>
+                      <th>User</th>
+                      <th>Stock</th>
+                      <th>Action</th>
+                      <th>Quantity</th>
+                      <th>Price</th>
+                      <th>Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for transaction in transactions %}
+                    <tr>
+                      <td>{{ transaction.id[:8] }}...</td>
+                      <td>{{ transaction.user.username if transaction.user else 'Unknown' }}</td>
+                      <td>{{ transaction.stock.symbol if transaction.stock else 'Unknown' }}</td>
+                      <td>
+                        {% if transaction.action == 'buy' %}
+                          <span class="badge bg-success">{{ transaction.action }}</span>
+                        {% else %}
+                          <span class="badge bg-danger">{{ transaction.action }}</span>
+                        {% endif %}
+                      </td>
+                      <td>{{ transaction.quantity }}</td>
+                      <td>${{ transaction.price }}</td>
+                      <td>{{ transaction.transaction_date[:10] }}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            {% else %}
+              <div class="alert alert-info">
+                <i class="bi bi-info-circle"></i> No transactions found in the system.
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

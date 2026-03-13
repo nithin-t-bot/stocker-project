@@ -1,0 +1,108 @@
+<!-- templates/service04.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Buy and Trade Stocks - Stocker</title>
+
+  <link href="{{ url_for('static', filename='img/logo stocker.png') }}" rel="icon" />
+  <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" />
+  <link href="{{ url_for('static', filename='vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet" />
+  <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" />
+</head>
+
+<body>
+
+  <header id="header" class="header d-flex align-items-center fixed-top">
+    <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+      <a class="logo d-flex align-items-center me-auto me-lg-0">
+        <img src="{{ url_for('static', filename='img/logo stocker.png') }}" alt="">
+        <h1 class="sitename">STOCKER</h1><span style="color: #3fb61a">.</span>
+      </a>
+      <nav id="navmenu" class="navmenu">
+        <ul class="d-flex align-items-center mb-0">
+          <li><a href="{{ url_for('dashboard_trader') }}" class="btn btn-primary ms-4 px-4 py-2 rounded">Back to
+              Dashboard</a></li>
+          <li><a href="{{ url_for('logout') }}" class="btn btn-danger ms-4 px-4 py-2 rounded">Logout</a></li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+    </div>
+  </header>
+
+  <section class="section" style="padding-top: 100px;">
+    <div class="container">
+      <!-- Flash Messages -->
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      {% for message in messages %}
+      <div class="alert alert-info alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+      {% endfor %}
+      {% endif %}
+      {% endwith %}
+      <div class="section-title">
+        <h2>Available Stocks</h2>
+        <p>Buy and trade stocks from the market</p>
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              {% if stocks %}
+              <div class="table-responsive">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>Symbol</th>
+                      <th>Company Name</th>
+                      <th>Current Price</th>
+                      <th>Change</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for stock in stocks %}
+                    <tr>
+                      <td><strong>{{ stock.symbol }}</strong></td>
+                      <td>{{ stock.name }}</td>
+                      <td>${{ stock.price }}</td>
+                      <td>
+                        {% if '+' in stock.change %}
+                        <span class="text-success">{{ stock.change }}</span>
+                        {% else %}
+                        <span class="text-danger">{{ stock.change }}</span>
+                        {% endif %}
+                      </td>
+                      <td>
+                        <div class="btn-group" role="group">
+                          <a href="{{ url_for('buy_stock', stock_id=stock.id) }}" class="btn btn-success btn-sm">Buy</a>
+                          <a href="{{ url_for('sell_stock', stock_id=stock.id) }}"
+                            class="btn btn-danger btn-sm">Sell</a>
+                        </div>
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+              {% else %}
+              <div class="alert alert-info">
+                <i class="bi bi-info-circle"></i> No stocks available at the moment.
+              </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</body>
+
+</html>

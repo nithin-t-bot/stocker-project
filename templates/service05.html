@@ -1,0 +1,162 @@
+<!-- templates/service05.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>My Portfolio - Stocker</title>
+
+  <link href="{{ url_for('static', filename='img/logo stocker.png') }}" rel="icon" />
+  <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" />
+  <link href="{{ url_for('static', filename='vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet" />
+  <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" />
+</head>
+<body>
+
+<header id="header" class="header d-flex align-items-center fixed-top">
+  <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+    <a class="logo d-flex align-items-center me-auto me-lg-0">
+      <img src="{{ url_for('static', filename='img/logo stocker.png') }}" alt="">
+      <h1 class="sitename">STOCKER</h1><span style="color: #3fb61a">.</span>
+    </a>
+    <nav id="navmenu" class="navmenu">
+      <ul class="d-flex align-items-center mb-0">  
+        <li><a href="{{ url_for('dashboard_trader') }}" class="btn btn-primary ms-4 px-4 py-2 rounded">Back to Dashboard</a></li>
+        <li><a href="{{ url_for('logout') }}" class="btn btn-danger ms-4 px-4 py-2 rounded">Logout</a></li>
+      </ul>
+      <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+    </nav>
+  </div>
+</header>
+
+<section class="section" style="padding-top: 100px;">
+  <div class="container">
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-info alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    <div class="section-title">
+      <h2>My Portfolio</h2>
+      <p>Your current stock holdings and transaction history</p>
+    </div>
+
+    <!-- Current Holdings -->
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Current Holdings</h5>
+          </div>
+          <div class="card-body">
+            {% if portfolio %}
+              <div class="table-responsive">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>Stock Symbol</th>
+                      <th>Company Name</th>
+                      <th>Quantity</th>
+                      <th>Average Price</th>
+                      <th>Current Price</th>
+                      <th>Total Value</th>
+                      <th>Profit/Loss</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for item in portfolio %}
+                    <tr>
+                      <td><strong>{{ item.stock.symbol if item.stock else 'Unknown' }}</strong></td>
+                      <td>{{ item.stock.name if item.stock else 'Unknown' }}</td>
+                      <td>{{ item.quantity }}</td>
+                      <td>${{ item.average_price }}</td>
+                      <td>${{ item.stock.price if item.stock else '0.00' }}</td>
+                      <td>${{ (item.quantity * (item.stock.price if item.stock else 0))|round(2) }}</td>
+                      <td>
+                        {% set total_cost = item.quantity * item.average_price %}
+                        {% set current_value = item.quantity * (item.stock.price if item.stock else 0) %}
+                        {% set profit_loss = current_value - total_cost %}
+                        {% if profit_loss > 0 %}
+                          <span class="text-success">+${{ profit_loss|round(2) }}</span>
+                        {% elif profit_loss < 0 %}
+                          <span class="text-danger">-${{ (profit_loss * -1)|round(2) }}</span>
+                        {% else %}
+                          <span class="text-muted">$0.00</span>
+                        {% endif %}
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            {% else %}
+              <div class="alert alert-info">
+                <i class="bi bi-info-circle"></i> You don't have any stock holdings yet. Start by <a href="{{ url_for('service04') }}">buying stocks</a>.
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Transaction History -->
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header bg-secondary text-white">
+            <h5 class="mb-0">Transaction History</h5>
+          </div>
+          <div class="card-body">
+            {% if transactions %}
+              <div class="table-responsive">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Stock</th>
+                      <th>Action</th>
+                      <th>Quantity</th>
+                      <th>Price</th>
+                      <th>Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for transaction in transactions %}
+                    <tr>
+                      <td>{{ transaction.transaction_date[:10] }}</td>
+                      <td>{{ transaction.stock.symbol if transaction.stock else 'Unknown' }}</td>
+                      <td>
+                        {% if transaction.action == 'buy' %}
+                          <span class="badge bg-success">{{ transaction.action }}</span>
+                        {% else %}
+                          <span class="badge bg-danger">{{ transaction.action }}</span>
+                        {% endif %}
+                      </td>
+                      <td>{{ transaction.quantity }}</td>
+                      <td>${{ transaction.price }}</td>
+                      <td>${{ (transaction.quantity * transaction.price)|round(2) }}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            {% else %}
+              <div class="alert alert-info">
+                <i class="bi bi-info-circle"></i> No transaction history available.
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

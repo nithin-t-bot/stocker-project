@@ -1,0 +1,80 @@
+<!-- templates/service03.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>View Portfolios - Stocker</title>
+
+  <link href="{{ url_for('static', filename='img/logo stocker.png') }}" rel="icon" />
+  <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" />
+  <link href="{{ url_for('static', filename='vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet" />
+  <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" />
+</head>
+<body>
+
+<header id="header" class="header d-flex align-items-center fixed-top">
+  <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+    <a class="logo d-flex align-items-center me-auto me-lg-0">
+      <img src="{{ url_for('static', filename='img/logo stocker.png') }}" alt="">
+      <h1 class="sitename">STOCKER</h1><span style="color: #3fb61a">.</span>
+    </a>
+    <nav id="navmenu" class="navmenu">
+      <ul class="d-flex align-items-center mb-0">  
+        <li><a href="{{ url_for('dashboard_admin') }}" class="btn btn-primary ms-4 px-4 py-2 rounded">Back to Dashboard</a></li>
+        <li><a href="{{ url_for('logout') }}" class="btn btn-danger ms-4 px-4 py-2 rounded">Logout</a></li>
+      </ul>
+      <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+    </nav>
+  </div>
+</header>
+
+<section class="section" style="padding-top: 100px;">
+  <div class="container">
+    <div class="section-title">
+      <h2>All Portfolios</h2>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            {% if portfolios %}
+              <div class="table-responsive">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>User</th>
+                      <th>Stock</th>
+                      <th>Quantity</th>
+                      <th>Average Price</th>
+                      <th>Total Value</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for portfolio in portfolios %}
+                    <tr>
+                      <td>{{ portfolio.user.username if portfolio.user else 'Unknown' }}</td>
+                      <td>{{ portfolio.stock.symbol if portfolio.stock else 'Unknown' }}</td>
+                      <td>{{ portfolio.quantity }}</td>
+                      <td>${{ portfolio.average_price }}</td>
+                      <td>${{ (portfolio.quantity * portfolio.average_price)|round(2) }}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            {% else %}
+              <div class="alert alert-info">
+                <i class="bi bi-info-circle"></i> No portfolios found in the system.
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

@@ -92,19 +92,14 @@ Stocker solves this by providing a **risk-free simulated trading platform** wher
 
 ## 📸 Screenshots
 
-### Home Page
+### 🏠 Home Page
+<img src="screenshots/home.png" width="800">
 
-![Home Page](screenshots/home.png)
+### 📊 Dashboard
+<img src="screenshots/dashboard.png" width="800">
 
-### Dashboard
-
-![Dashboard](screenshots/dashboard.png)
-
-### Portfolio
-
-![Portfolio](screenshots/portfolio.png)
-
----
+### 💼 Portfolio
+<img src="screenshots/portfolio.png" width="800">
 
 ## 🔮 Future Improvements
 

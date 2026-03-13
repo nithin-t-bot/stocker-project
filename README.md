@@ -92,13 +92,17 @@ Stocker solves this by providing a **risk-free simulated trading platform** wher
 
 ## 📸 Screenshots
 
-![Home](screenshots/home-page.png)
+### Home
+![Home](screenshots/Home%20Page.png)
 
-![Trading](screenshots/trading-page.png)
+### Trading
+![Trading](screenshots/Trading%20page.png)
 
-![Portfolio](screenshots/portfolio-page.png)
+### Portfolio
+![Portfolio](screenshots/Portfolio%20page.png)
 
-![Services](screenshots/services-page.png)
+### Services
+![Services](screenshots/Services%20Page.png)
 ## 👨‍💻 Author
 
 **Nithin T**

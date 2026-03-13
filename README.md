@@ -92,15 +92,17 @@ Stocker solves this by providing a **risk-free simulated trading platform** wher
 
 ## 📸 Screenshots
 
-### 🏠 Home Page
-<img src="screenshots/home.png" width="800">
+### Home Page
+![Home Page](screenshots/Home%20Page.png)
 
-### 📊 Dashboard
-<img src="screenshots/dashboard.png" width="800">
+### Trading Page
+![Trading Page](screenshots/Trading%20page.png)
 
-### 💼 Portfolio
-<img src="screenshots/portfolio.png" width="800">
+### Portfolio Page
+![Portfolio Page](screenshots/Portfolio%20page.png)
 
+### Services Page
+![Services Page](screenshots/Services%20Page.png)
 ## 🔮 Future Improvements
 
 * AI-based stock price prediction
